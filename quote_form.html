@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Request a Quote - AeroExotic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            padding: 2rem;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: .3rem;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: .5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        button {
+            background-color: #b71c1c;
+            color: #fff;
+            padding: .7rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Request a Quote</h1>
+    <p>Please fill in the details below and we will contact you to discuss scheduling and provide a quote.</p>
+    <form action="mailto:info@aeroexotic.com" method="POST" enctype="text/plain">
+        <div class="form-group">
+            <label for="name">Name<span style="color:#b71c1c">*</span></label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email<span style="color:#b71c1c">*</span></label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+            <label for="service">Service Type</label>
+            <select id="service" name="service">
+                <option value="Automotive Detailing">Automotive Detailing</option>
+                <option value="Aircraft Detailing">Aircraft Detailing</option>
+                <option value="Watercraft Detailing">Watercraft Detailing</option>
+                <option value="Paint Enhancement">Paint Enhancement &amp; Correction</option>
+                <option value="Ceramic Coating">Ceramic Coating</option>
+                <option value="Maintenance Plan">Maintenance Plan</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date">Preferred Date</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div class="form-group">
+            <label for="message">Additional Notes</label>
+            <textarea id="message" name="message"></textarea>
+        </div>
+        <button type="submit">Submit Request</button>
+    </form>
+</div>
+</body>
+</html>
