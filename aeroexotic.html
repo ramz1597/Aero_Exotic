@@ -1,0 +1,3864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AeroExotic — Aircraft · Watercraft · Automotive Detailing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS VARIABLES & RESET
+======================================== */
+:root {
+  --black:       #07080a;
+  --dark:        #0d0e11;
+  --dark-2:      #141519;
+  --graphite:    #1c1e24;
+  --gunmetal:    #252830;
+  --silver:      #7a808f;
+  --light-silver:#b8bdc8;
+  --white:       #e8eaf0;
+  --pure-white:  #ffffff;
+  --red:         #b52b22;
+  --red-bright:  #d13a2f;
+  --red-glow:    rgba(181, 43, 34, 0.25);
+  --red-subtle:  rgba(181, 43, 34, 0.1);
+  --gold:        #9a8060;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-heading: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-accent:  'Rajdhani', sans-serif;
+  --transition:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --shadow-card:  0 8px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-red:   0 0 30px var(--red-glow);
+  --border-dim:   1px solid rgba(255,255,255,0.06);
+  --border-silver:1px solid rgba(184,189,200,0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ========================================
+   UTILITY
+======================================== */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.section-label {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--red-bright);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s var(--transition), transform 0.8s var(--transition);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s var(--transition), transform 0.8s var(--transition);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ========================================
+   LOGO SVG MARK
+======================================== */
+.logo-mark {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+}
+
+.logo-full {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-text-wrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logo-text-main {
+  font-family: var(--font-accent);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+}
+
+.logo-text-sub {
+  font-family: var(--font-accent);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* ========================================
+   NAVIGATION
+======================================== */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  transition: padding 0.4s var(--ease-out), background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+#navbar.scrolled {
+  padding: 12px 0;
+  background: rgba(7, 8, 10, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: var(--border-dim);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--light-silver);
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--red-bright);
+  transition: width 0.3s var(--ease-out);
+}
+
+.nav-links a:hover { color: var(--pure-white); }
+.nav-links a:hover::after { width: 100%; }
+
+.btn-nav {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pure-white);
+  background: var(--red);
+  border: none;
+  padding: 11px 24px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-nav:hover {
+  background: var(--red-bright);
+  transform: translateY(-1px);
+}
+
+.nav-mobile-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nav-mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+/* ========================================
+   HERO SECTION
+======================================== */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(181,43,34,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(30,32,38,0.8) 0%, transparent 50%),
+    linear-gradient(160deg, #07080a 0%, #0f1014 40%, #141418 100%);
+  z-index: 0;
+}
+
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 80px 80px;
+  z-index: 1;
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.3) 70%, transparent 100%);
+}
+
+.hero-speedlines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-speedlines::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: -10%;
+  width: 120%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(181,43,34,0.4) 30%, rgba(181,43,34,0.8) 50%, rgba(181,43,34,0.4) 70%, transparent 100%);
+  transform: rotate(-8deg);
+  animation: speedline1 4s ease-in-out infinite;
+}
+
+.hero-speedlines::after {
+  content: '';
+  position: absolute;
+  top: 35%;
+  left: -10%;
+  width: 120%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(181,43,34,0.2) 40%, rgba(181,43,34,0.5) 55%, transparent 100%);
+  transform: rotate(-8deg);
+  animation: speedline2 4s ease-in-out infinite 0.3s;
+}
+
+@keyframes speedline1 {
+  0%, 100% { opacity: 0; transform: rotate(-8deg) translateX(-5%); }
+  20% { opacity: 1; }
+  80% { opacity: 0.3; }
+  50% { transform: rotate(-8deg) translateX(5%); }
+}
+
+@keyframes speedline2 {
+  0%, 100% { opacity: 0; transform: rotate(-8deg) translateX(-8%); }
+  30% { opacity: 0.7; }
+  70% { opacity: 0; }
+  60% { transform: rotate(-8deg) translateX(8%); }
+}
+
+.hero-vehicle-silhouette {
+  position: absolute;
+  right: -5%;
+  bottom: 0;
+  width: 70%;
+  height: 100%;
+  background: 
+    linear-gradient(135deg, transparent 40%, rgba(181,43,34,0.03) 60%, transparent 80%),
+    radial-gradient(ellipse 60% 40% at 70% 80%, rgba(181,43,34,0.12) 0%, transparent 70%);
+  z-index: 2;
+}
+
+/* Decorative car silhouette using CSS */
+.hero-car {
+  position: absolute;
+  right: 3%;
+  bottom: 10%;
+  width: 55%;
+  height: 45%;
+  z-index: 3;
+}
+
+.hero-car-body {
+  position: absolute;
+  bottom: 30%;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(160deg, 
+    rgba(28, 28, 30, 0.95) 0%, 
+    rgba(20, 20, 22, 0.98) 40%, 
+    rgba(35, 35, 38, 0.9) 100%
+  );
+  clip-path: polygon(5% 100%, 0% 60%, 8% 35%, 28% 15%, 52% 10%, 72% 15%, 88% 30%, 95% 45%, 100% 60%, 100% 100%);
+  box-shadow: 0 -8px 60px rgba(181,43,34,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.hero-car-shine {
+  position: absolute;
+  bottom: 50%;
+  left: 15%;
+  width: 60%;
+  height: 30%;
+  background: linear-gradient(160deg, 
+    rgba(255,255,255,0.04) 0%, 
+    rgba(255,255,255,0.01) 50%, 
+    transparent 100%
+  );
+  clip-path: polygon(8% 100%, 5% 50%, 20% 10%, 55% 5%, 75% 20%, 80% 100%);
+}
+
+.hero-wheel-left, .hero-wheel-right {
+  position: absolute;
+  bottom: 15%;
+  width: 18%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a1c 30%, #0d0d0f 60%, #050507 100%);
+  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-wheel-left { left: 8%; }
+.hero-wheel-right { right: 5%; }
+
+.hero-wheel-left::before, .hero-wheel-right::before {
+  content: '';
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2a2a2e 0%, #1a1a1c 60%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 720px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(181,43,34,0.12);
+  border: 1px solid rgba(181,43,34,0.3);
+  padding: 6px 16px;
+  margin-bottom: 28px;
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  animation: fadeInDown 0.8s var(--transition) 0.2s both;
+}
+
+.hero-badge::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--red-bright);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  margin-bottom: 12px;
+  animation: fadeInUp 1s var(--transition) 0.4s both;
+}
+
+.hero-headline .accent-line {
+  display: block;
+  background: linear-gradient(135deg, var(--red-bright) 0%, #e84a3e 50%, #c0392b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-family: var(--font-accent);
+  font-size: clamp(14px, 1.6vw, 17px);
+  font-weight: 400;
+  color: var(--light-silver);
+  line-height: 1.6;
+  max-width: 540px;
+  margin-bottom: 44px;
+  animation: fadeInUp 1s var(--transition) 0.6s both;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeInUp 1s var(--transition) 0.8s both;
+}
+
+.btn-primary {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pure-white);
+  background: var(--red);
+  border: none;
+  padding: 16px 36px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--red-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(181,43,34,0.35);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-secondary {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pure-white);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 15px 34px;
+  cursor: pointer;
+  position: relative;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255,255,255,0.5);
+  color: var(--pure-white);
+  transform: translateY(-2px);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: var(--border-dim);
+  animation: fadeInUp 1s var(--transition) 1s both;
+}
+
+.hero-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  color: var(--pure-white);
+  letter-spacing: 0.02em;
+}
+
+.hero-stat-num span {
+  color: var(--red-bright);
+}
+
+.hero-stat-label {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  animation: fadeInUp 1s var(--transition) 1.2s both;
+}
+
+.hero-scroll-cue span {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--silver), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.6; }
+  50% { transform: scaleY(1.3); opacity: 1; }
+}
+
+/* Hero logo watermark */
+.hero-watermark {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+   TRUST BAR
+======================================== */
+#trust-bar {
+  background: var(--dark-2);
+  border-top: 1px solid rgba(181,43,34,0.25);
+  border-bottom: var(--border-dim);
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+#trust-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(181,43,34,0.6) 30%, rgba(181,43,34,0.6) 70%, transparent 100%);
+}
+
+.trust-marquee {
+  display: flex;
+  gap: 0;
+  animation: marquee 30s linear infinite;
+  white-space: nowrap;
+}
+
+.trust-marquee-inner {
+  display: flex;
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 40px;
+  border-right: var(--border-dim);
+  white-space: nowrap;
+  transition: background 0.3s ease;
+}
+
+.trust-item:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.trust-icon {
+  color: var(--red-bright);
+  flex-shrink: 0;
+}
+
+.trust-text {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--light-silver);
+}
+
+/* ========================================
+   SERVICES SECTION
+======================================== */
+#services {
+  padding: 120px 0;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+#services::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(181,43,34,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.section-label-center {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.section-label-center::before,
+.section-label-center::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red-bright));
+}
+
+.section-label-center::after {
+  background: linear-gradient(90deg, var(--red-bright), transparent);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  margin-bottom: 20px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--silver);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Services Tabs */
+.services-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 50px;
+  padding: 4px;
+  background: var(--dark-2);
+  border: var(--border-dim);
+  border-radius: 2px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tab-btn {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--silver);
+  background: transparent;
+  border: none;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+}
+
+.tab-btn.active {
+  color: var(--pure-white);
+  background: var(--red);
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+
+.tab-btn:not(.active):hover {
+  color: var(--light-silver);
+}
+
+/* Service panel visibility */
+.services-panel { display: none; }
+.services-panel.active { display: block; }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2px;
+}
+
+.service-card {
+  background: var(--dark-2);
+  border: var(--border-dim);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s var(--transition), border-color 0.3s ease, box-shadow 0.4s ease;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.service-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(181,43,34,0.05) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(181,43,34,0.25);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(181,43,34,0.1);
+}
+
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover::after { opacity: 1; }
+
+.service-card-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--red-bright);
+  margin-bottom: 24px;
+  transition: transform 0.4s var(--transition);
+  position: relative;
+  z-index: 1;
+}
+
+.service-card:hover .service-card-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.service-card-tag {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-title {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-price {
+  font-family: var(--font-accent);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--light-silver);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-price span {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--pure-white);
+  letter-spacing: 0.02em;
+}
+
+.service-card-desc {
+  font-size: 14px;
+  color: var(--silver);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-features {
+  list-style: none;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-features li {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--light-silver);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.service-card-features li::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--red-bright);
+  flex-shrink: 0;
+}
+
+.service-card-cta {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.3s ease, color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card:hover .service-card-cta {
+  gap: 14px;
+  color: var(--pure-white);
+}
+
+.service-card-cta::after {
+  content: '→';
+  font-size: 14px;
+}
+
+/* Featured / Popular card */
+.service-card.featured {
+  border-color: rgba(181,43,34,0.3);
+  background: linear-gradient(135deg, rgba(181,43,34,0.08) 0%, var(--dark-2) 40%);
+}
+
+.service-card.featured::before {
+  transform: scaleX(1);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: var(--font-accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pure-white);
+  background: var(--red);
+  padding: 5px 12px;
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+}
+
+/* ========================================
+   WHY CHOOSE SECTION
+======================================== */
+#why-choose {
+  padding: 120px 0;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+
+#why-choose::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent 100%);
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.why-left {}
+
+.why-left .section-label { margin-bottom: 20px; }
+
+.why-headline {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  margin-bottom: 24px;
+}
+
+.why-desc {
+  font-size: 15px;
+  color: var(--silver);
+  line-height: 1.8;
+  margin-bottom: 40px;
+  max-width: 440px;
+}
+
+.why-big-stat {
+  display: flex;
+  gap: 40px;
+  padding: 32px;
+  background: var(--dark-2);
+  border: var(--border-dim);
+  border-left: 3px solid var(--red);
+}
+
+.why-stat {
+  text-align: center;
+}
+
+.why-stat-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 1;
+  color: var(--pure-white);
+  letter-spacing: 0.02em;
+}
+
+.why-stat-num span { color: var(--red-bright); }
+
+.why-stat-label {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--silver);
+  margin-top: 4px;
+}
+
+.why-features {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.why-feature {
+  display: flex;
+  gap: 24px;
+  padding: 28px;
+  background: var(--dark-2);
+  border: var(--border-dim);
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  cursor: default;
+}
+
+.why-feature:hover {
+  border-color: rgba(181,43,34,0.2);
+  background: rgba(181,43,34,0.04);
+  transform: translateX(4px);
+}
+
+.why-feature-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(181,43,34,0.1);
+  border: 1px solid rgba(181,43,34,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red-bright);
+  flex-shrink: 0;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.why-feature:hover .why-feature-icon {
+  background: rgba(181,43,34,0.18);
+  border-color: rgba(181,43,34,0.4);
+}
+
+.why-feature-content {}
+
+.why-feature-title {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+  margin-bottom: 6px;
+}
+
+.why-feature-text {
+  font-size: 13px;
+  color: var(--silver);
+  line-height: 1.6;
+}
+
+/* ========================================
+   GALLERY SECTION
+======================================== */
+#gallery {
+  padding: 120px 0;
+  background: var(--black);
+  position: relative;
+}
+
+.gallery-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--silver);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  color: var(--pure-white);
+  border-color: var(--red);
+  background: rgba(181,43,34,0.1);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  background: var(--dark-2);
+}
+
+.gallery-item.tall { grid-row: span 2; aspect-ratio: unset; }
+.gallery-item.wide { grid-column: span 2; }
+
+.gallery-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out), filter 0.5s ease;
+  filter: brightness(0.8) saturate(0.9);
+}
+
+.gallery-item:hover .gallery-item-img {
+  transform: scale(1.06);
+  filter: brightness(1) saturate(1.1);
+}
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+}
+
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-caption {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+}
+
+.gallery-caption-sub {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  margin-top: 2px;
+}
+
+.gallery-expand-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-expand-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Gallery placeholder colors (since we can't embed photos in single-file) */
+.g1 { background: linear-gradient(135deg, #1a1010 0%, #2a1515 50%, #181010 100%); }
+.g2 { background: linear-gradient(135deg, #0f1318 0%, #1a2030 50%, #0d1015 100%); }
+.g3 { background: linear-gradient(135deg, #101418 0%, #1c2028 50%, #0e1218 100%); }
+.g4 { background: linear-gradient(135deg, #141010 0%, #201818 50%, #100e0e 100%); }
+.g5 { background: linear-gradient(135deg, #0c1018 0%, #141c28 50%, #0a0e14 100%); }
+.g6 { background: linear-gradient(135deg, #18100c 0%, #281810 50%, #140e0a 100%); }
+
+/* Gallery uses actual brand photos */
+.gallery-photo {
+  background-size: cover;
+  background-position: center;
+}
+
+/* ========================================
+   PROCESS SECTION
+======================================== */
+#process {
+  padding: 120px 0;
+  background: var(--dark);
+  position: relative;
+}
+
+.process-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  margin-top: 70px;
+}
+
+.process-timeline::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--red) 0%, var(--red) 100%);
+  background-size: 200% 100%;
+  animation: progress-line 3s ease-in-out infinite;
+}
+
+@keyframes progress-line {
+  0%, 100% { background-position: -100% 0; opacity: 0.3; }
+  50% { background-position: 0% 0; opacity: 0.8; }
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+}
+
+.process-step-num {
+  width: 64px;
+  height: 64px;
+  background: var(--dark-2);
+  border: 1px solid rgba(181,43,34,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+.process-step:hover .process-step-num {
+  background: rgba(181,43,34,0.12);
+  border-color: var(--red-bright);
+  box-shadow: 0 0 20px var(--red-glow);
+}
+
+.process-step-num-text {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  color: var(--red-bright);
+}
+
+.process-step-icon {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.process-step-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+  margin-bottom: 12px;
+}
+
+.process-step-text {
+  font-size: 13px;
+  color: var(--silver);
+  line-height: 1.7;
+}
+
+/* ========================================
+   TESTIMONIALS
+======================================== */
+#reviews {
+  padding: 120px 0;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.7s var(--transition);
+}
+
+.testimonial-card {
+  flex: 0 0 calc(33.333% - 14px);
+  background: var(--dark-2);
+  border: var(--border-dim);
+  padding: 40px;
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(181,43,34,0.2);
+}
+
+.testimonial-quote-mark {
+  font-family: Georgia, serif;
+  font-size: 80px;
+  line-height: 0.6;
+  color: rgba(181,43,34,0.15);
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.testimonial-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.star {
+  color: var(--red-bright);
+  font-size: 14px;
+}
+
+.testimonial-text {
+  font-size: 15px;
+  color: var(--light-silver);
+  line-height: 1.8;
+  margin-bottom: 32px;
+  font-style: italic;
+  font-family: var(--font-body);
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 24px;
+  border-top: var(--border-dim);
+}
+
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
+  background: var(--gunmetal);
+  border: 1px solid rgba(181,43,34,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--red-bright);
+}
+
+.testimonial-name {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+}
+
+.testimonial-vehicle {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.testimonials-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.t-nav-btn {
+  width: 48px;
+  height: 48px;
+  background: var(--dark-2);
+  border: var(--border-dim);
+  color: var(--light-silver);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
+
+.t-nav-btn:hover {
+  border-color: var(--red);
+  color: var(--red-bright);
+  background: rgba(181,43,34,0.08);
+}
+
+/* ========================================
+   NOT YOUR AVERAGE DETAILER
+======================================== */
+#compare {
+  padding: 120px 0;
+  background: var(--dark);
+  position: relative;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 60px;
+}
+
+.compare-col {
+  background: var(--dark-2);
+  border: var(--border-dim);
+  overflow: hidden;
+}
+
+.compare-col-header {
+  padding: 24px 36px;
+  border-bottom: var(--border-dim);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.compare-col.aero .compare-col-header {
+  background: rgba(181,43,34,0.08);
+  border-bottom-color: rgba(181,43,34,0.2);
+}
+
+.compare-col-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.compare-col.aero .compare-col-title { color: var(--red-bright); }
+.compare-col.others .compare-col-title { color: var(--silver); }
+
+.compare-items {}
+
+.compare-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 36px;
+  border-bottom: var(--border-dim);
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.compare-col.aero .compare-item { color: var(--light-silver); }
+.compare-col.others .compare-item { color: var(--silver); }
+
+.compare-icon-yes { color: var(--red-bright); }
+.compare-icon-no { color: rgba(255,255,255,0.15); }
+
+/* ========================================
+   FAQ SECTION
+======================================== */
+#faq {
+  padding: 120px 0;
+  background: var(--black);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 60px;
+}
+
+.faq-item {
+  background: var(--dark-2);
+  border: var(--border-dim);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.faq-item.open {
+  border-color: rgba(181,43,34,0.2);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 32px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.faq-question:hover { background: rgba(255,255,255,0.02); }
+
+.faq-q-text {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--pure-white);
+}
+
+.faq-toggle {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--light-silver);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.faq-item.open .faq-toggle {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease-out), padding 0.4s ease;
+  padding: 0 32px;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 200px;
+  padding: 0 32px 24px;
+}
+
+.faq-answer-text {
+  font-size: 14px;
+  color: var(--silver);
+  line-height: 1.8;
+  border-top: var(--border-dim);
+  padding-top: 16px;
+}
+
+/* ========================================
+   QUOTE FORM SECTION
+======================================== */
+#quote {
+  padding: 120px 0;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+
+#quote::before {
+  content: '';
+  position: absolute;
+  top: -300px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(181,43,34,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.quote-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.quote-left {}
+
+.quote-left .section-label { margin-bottom: 20px; }
+
+.quote-headline {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 4.5vw, 60px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  margin-bottom: 24px;
+}
+
+.quote-desc {
+  font-size: 15px;
+  color: var(--silver);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.quote-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quote-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--light-silver);
+  transition: color 0.3s ease;
+}
+
+.quote-contact-item:hover { color: var(--pure-white); }
+
+.quote-contact-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(181,43,34,0.1);
+  border: 1px solid rgba(181,43,34,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red-bright);
+  flex-shrink: 0;
+}
+
+.quote-form {
+  background: var(--dark-2);
+  border: var(--border-dim);
+  padding: 48px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  background: var(--graphite);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--pure-white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8f9a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.form-select option {
+  background: var(--dark-2);
+  color: var(--white);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--red-bright);
+  background: rgba(181,43,34,0.04);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-submit {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ========================================
+   FINAL CTA SECTION
+======================================== */
+#final-cta {
+  padding: 160px 0;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+#final-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(181,43,34,0.1) 0%, transparent 60%),
+    linear-gradient(180deg, var(--black) 0%, rgba(181,43,34,0.05) 50%, var(--black) 100%);
+  pointer-events: none;
+}
+
+.cta-bg-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-label {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.cta-label::before, .cta-label::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--red-bright);
+  opacity: 0.5;
+}
+
+.cta-headline {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6.5vw, 88px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  margin-bottom: 28px;
+}
+
+.cta-sub {
+  font-size: 17px;
+  color: var(--silver);
+  max-width: 500px;
+  margin: 0 auto 50px;
+  line-height: 1.7;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-large {
+  padding: 20px 48px;
+  font-size: 14px;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+#footer {
+  background: var(--dark-2);
+  border-top: var(--border-silver);
+  padding: 80px 0 40px;
+  position: relative;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 60px;
+  padding-bottom: 60px;
+  border-bottom: var(--border-dim);
+  margin-bottom: 40px;
+}
+
+.footer-brand {}
+
+.footer-brand .logo-full { margin-bottom: 20px; }
+
+.footer-tagline {
+  font-size: 14px;
+  color: var(--silver);
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 280px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 38px;
+  height: 38px;
+  background: var(--graphite);
+  border: var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--silver);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.social-btn:hover {
+  background: rgba(181,43,34,0.1);
+  border-color: rgba(181,43,34,0.3);
+  color: var(--red-bright);
+}
+
+.footer-col-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pure-white);
+  margin-bottom: 20px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--silver);
+  transition: color 0.3s ease, padding-left 0.3s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: var(--pure-white);
+  padding-left: 6px;
+}
+
+.footer-contact-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+
+.footer-contact-icon {
+  color: var(--red-bright);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footer-contact-text {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--silver);
+  line-height: 1.5;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-copy {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.25);
+}
+
+.footer-legal {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-legal a {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.2);
+  transition: color 0.3s ease;
+}
+
+.footer-legal a:hover { color: var(--silver); }
+
+/* Footer watermark */
+.footer-watermark {
+  position: absolute;
+  right: 5%;
+  bottom: 20%;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* ========================================
+   FLOATING QUOTE BUTTON
+======================================== */
+.floating-cta {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.floating-quote-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--red);
+  border: none;
+  padding: 14px 22px;
+  cursor: pointer;
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pure-white);
+  box-shadow: 0 8px 30px rgba(181,43,34,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.floating-quote-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(181,43,34,0.5);
+  background: var(--red-bright);
+}
+
+/* ========================================
+   LIGHTBOX MODAL
+======================================== */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.open { display: flex; }
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.3s ease;
+}
+
+.lightbox-close:hover { background: rgba(181,43,34,0.3); }
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+/* ========================================
+   MOBILE NAVIGATION
+======================================== */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(7,8,10,0.97);
+  backdrop-filter: blur(20px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.mobile-menu.open { display: flex; }
+
+.mobile-menu-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.mobile-menu-links a {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 0.06em;
+  color: var(--pure-white);
+  transition: color 0.3s ease;
+}
+
+.mobile-menu-links a:hover { color: var(--red-bright); }
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 1100px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .why-grid { gap: 50px; }
+}
+
+@media (max-width: 900px) {
+  .container { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+  .btn-nav { display: none; }
+  .nav-mobile-toggle { display: flex; }
+  
+  .hero-car { display: none; }
+  .hero-content { max-width: 100%; }
+  .hero-stats { gap: 24px; }
+  
+  .services-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; gap: 40px; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item.wide { grid-column: span 1; }
+  .gallery-item.tall { grid-row: span 1; }
+  
+  .process-timeline {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .process-timeline::before { display: none; }
+  
+  .testimonial-card { flex: 0 0 calc(100% - 0px); }
+  
+  .compare-grid { grid-template-columns: 1fr; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .quote-inner { grid-template-columns: 1fr; gap: 40px; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  
+  .cta-headline { font-size: clamp(36px, 8vw, 60px); }
+}
+
+@media (max-width: 600px) {
+  .hero-stats { flex-wrap: wrap; gap: 20px; }
+  .hero-ctas { flex-direction: column; }
+  .btn-primary, .btn-secondary { text-align: center; }
+  .process-timeline { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .services-tabs { flex-wrap: wrap; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+  .floating-cta { bottom: 16px; right: 16px; }
+  .floating-quote-btn { padding: 12px 18px; font-size: 11px; }
+}
+
+/* ========================================
+   SECTION DIVIDERS
+======================================== */
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(181,43,34,0.4) 30%, rgba(181,43,34,0.4) 70%, transparent 100%);
+}
+
+/* ========================================
+   PRICING SHOWCASE
+======================================== */
+#pricing {
+  padding: 120px 0;
+  background: var(--dark);
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 60px;
+}
+
+@media (max-width: 900px) {
+  .pricing-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
+
+.pricing-card {
+  background: var(--dark-2);
+  border: var(--border-dim);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--transition), border-color 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(181,43,34,0.25);
+}
+
+.pricing-card.popular {
+  border-color: rgba(181,43,34,0.3);
+  background: linear-gradient(160deg, rgba(181,43,34,0.06) 0%, var(--dark-2) 50%);
+}
+
+.pricing-popular-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: var(--font-accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--red);
+  color: white;
+  padding: 6px 16px;
+}
+
+.pricing-tier {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  margin-bottom: 8px;
+}
+
+.pricing-name {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pure-white);
+  margin-bottom: 12px;
+}
+
+.pricing-price {
+  margin-bottom: 24px;
+}
+
+.pricing-from {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.pricing-amount {
+  font-family: var(--font-display);
+  font-size: 52px;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  line-height: 1;
+}
+
+.pricing-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.pricing-items li {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--light-silver);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.pricing-items li::before {
+  content: '—';
+  color: var(--red-bright);
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+/* ========================================
+   IMAGE SECTION
+======================================== */
+.brand-image-strip {
+  position: relative;
+  height: 480px;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.brand-image-strip-bg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.5) saturate(0.8);
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.brand-image-strip:hover .brand-image-strip-bg {
+  transform: scale(1);
+}
+
+.brand-image-strip-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(7,8,10,0.95) 0%, rgba(7,8,10,0.5) 40%, rgba(7,8,10,0.2) 70%, rgba(7,8,10,0.6) 100%);
+  display: flex;
+  align-items: center;
+}
+
+.strip-content {
+  padding: 0 80px;
+  max-width: 580px;
+}
+
+.strip-eyebrow {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  margin-bottom: 16px;
+}
+
+.strip-headline {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 0.95;
+  color: var(--pure-white);
+  margin-bottom: 20px;
+  letter-spacing: 0.02em;
+}
+
+.strip-text {
+  font-size: 15px;
+  color: var(--light-silver);
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+/* Service area strip */
+#service-area {
+  padding: 80px 0;
+  background: var(--dark-2);
+  border-top: var(--border-dim);
+  border-bottom: var(--border-dim);
+}
+
+.service-area-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.service-area-text {}
+
+.service-area-title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  letter-spacing: 0.02em;
+  color: var(--pure-white);
+  margin-bottom: 10px;
+}
+
+.service-area-sub {
+  font-size: 15px;
+  color: var(--silver);
+  line-height: 1.6;
+}
+
+.service-area-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.area-tag {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--light-silver);
+  background: var(--graphite);
+  border: var(--border-dim);
+  padding: 8px 18px;
+  transition: all 0.3s ease;
+}
+
+.area-tag:hover {
+  border-color: rgba(181,43,34,0.3);
+  color: var(--pure-white);
+  background: rgba(181,43,34,0.06);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ========================================
+     FLOATING CTA
+======================================== -->
+<div class="floating-cta">
+  <a href="#quote" class="floating-quote-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Get a Quote
+  </a>
+</div>
+
+<!-- ========================================
+     LIGHTBOX
+======================================== -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ========================================
+     MOBILE MENU
+======================================== -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul class="mobile-menu-links">
+    <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
+    <li><a href="#why-choose" onclick="toggleMobileMenu()">Why Us</a></li>
+    <li><a href="#gallery" onclick="toggleMobileMenu()">Gallery</a></li>
+    <li><a href="#process" onclick="toggleMobileMenu()">Process</a></li>
+    <li><a href="#reviews" onclick="toggleMobileMenu()">Reviews</a></li>
+    <li><a href="#faq" onclick="toggleMobileMenu()">FAQ</a></li>
+    <li><a href="#quote" onclick="toggleMobileMenu()">Contact</a></li>
+  </ul>
+  <a href="#quote" class="btn-primary" onclick="toggleMobileMenu()">Book Now</a>
+</div>
+
+<!-- ========================================
+     NAVBAR
+======================================== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <!-- Logo -->
+    <a href="#" class="logo-full">
+      <svg class="logo-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 4L8 72H20L28 52H52L60 72H72L40 4Z" fill="white" opacity="0.9"/>
+        <path d="M32 44L40 20L48 44H32Z" fill="#b52b22"/>
+        <!-- Wing left -->
+        <path d="M6 38L26 34L22 42L6 46Z" fill="white" opacity="0.9"/>
+        <path d="M4 44L24 40L20 47L4 50Z" fill="white" opacity="0.6"/>
+        <path d="M5 50L22 46L19 52L5 55Z" fill="white" opacity="0.35"/>
+      </svg>
+      <div class="logo-text-wrap">
+        <span class="logo-text-main">AeroExotic</span>
+        <span class="logo-text-sub">Aircraft · Watercraft · Automotive</span>
+      </div>
+    </a>
+
+    <!-- Links -->
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why-choose">Why Us</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#quote">Contact</a></li>
+    </ul>
+
+    <a href="#quote" class="btn-nav">Book Now</a>
+
+    <!-- Mobile toggle -->
+    <div class="nav-mobile-toggle" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ========================================
+     HERO
+======================================== -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-speedlines"></div>
+
+  <!-- Watermark logo -->
+  <div class="hero-watermark">
+    <svg width="600" height="600" viewBox="0 0 80 80" fill="none">
+      <path d="M40 4L8 72H20L28 52H52L60 72H72L40 4Z" fill="white"/>
+      <path d="M6 38L26 34L22 42L6 46Z" fill="white"/>
+      <path d="M4 44L24 40L20 47L4 50Z" fill="white"/>
+      <path d="M5 50L22 46L19 52L5 55Z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Decorative car shape -->
+  <div class="hero-vehicle-silhouette"></div>
+  <div class="hero-car">
+    <div class="hero-car-body">
+      <div class="hero-car-shine"></div>
+    </div>
+    <div class="hero-wheel-left"></div>
+    <div class="hero-wheel-right"></div>
+  </div>
+
+  <div class="container" style="position:relative; z-index:10;">
+    <div class="hero-content">
+      <div class="hero-badge">
+        Premium Mobile Detailing — Spokane, WA & Surrounding Areas
+      </div>
+
+      <h1 class="hero-headline">
+        Precision Care<br>
+        <span class="accent-line">Beyond</span><br>
+        Ordinary
+      </h1>
+
+      <p class="hero-sub">
+        Elite mobile detailing for aircraft, watercraft, and exotic vehicles. We come to you — bringing showroom results, premium products, and white-glove service directly to your hangar, marina, or driveway.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#quote" class="btn-primary btn-large">Get a Quote</a>
+        <a href="#services" class="btn-secondary btn-large">View Services</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">500<span>+</span></div>
+          <div class="hero-stat-label">Vehicles Detailed</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-label">Specializations</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">100<span>%</span></div>
+          <div class="hero-stat-label">Mobile Service</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">5<span>★</span></div>
+          <div class="hero-stat-label">Client Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-cue">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ========================================
+     TRUST BAR
+======================================== -->
+<div id="trust-bar">
+  <div class="trust-marquee">
+    <div class="trust-marquee-inner">
+      <!-- Duplicate items for seamless loop -->
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <span class="trust-text">100% Mobile Service</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="trust-text">Luxury & Exotic Specialists</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="trust-text">Aircraft · Watercraft · Automotive</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <span class="trust-text">Paint-Safe Techniques</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </div>
+        <span class="trust-text">Premium-Grade Products</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <span class="trust-text">White-Glove Experience</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <span class="trust-text">We Bring Everything On-Site</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="trust-text">5-Star Rated Service</span>
+      </div>
+    </div>
+    <!-- Duplicate for loop -->
+    <div class="trust-marquee-inner" aria-hidden="true">
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><span class="trust-text">100% Mobile Service</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="trust-text">Luxury & Exotic Specialists</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><span class="trust-text">Aircraft · Watercraft · Automotive</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><span class="trust-text">Paint-Safe Techniques</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div><span class="trust-text">Premium-Grade Products</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="trust-text">White-Glove Experience</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><span class="trust-text">We Bring Everything On-Site</span></div>
+      <div class="trust-item"><div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><span class="trust-text">5-Star Rated Service</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     SERVICES
+======================================== -->
+<section id="services">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label-center">Our Expertise</div>
+      <h2 class="section-title">Premium Detailing Services</h2>
+      <p class="section-desc">From exotic supercars to private aircraft and luxury watercraft — every surface treated with the precision it deserves.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="services-tabs reveal">
+      <button class="tab-btn active" onclick="switchTab('automotive')">Automotive</button>
+      <button class="tab-btn" onclick="switchTab('aircraft')">Aircraft</button>
+      <button class="tab-btn" onclick="switchTab('watercraft')">Watercraft</button>
+      <button class="tab-btn" onclick="switchTab('protection')">Protection</button>
+    </div>
+
+    <!-- Automotive Panel -->
+    <div class="services-panel active" id="panel-automotive">
+      <div class="services-grid">
+        <div class="service-card reveal" style="transition-delay:0.05s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <div class="service-card-tag">Exterior</div>
+          <div class="service-card-title">Essential Wash</div>
+          <div class="service-card-price">Starting at <span>$60</span></div>
+          <p class="service-card-desc">Professional hand wash using high pH-enhanced cleaning agents. Foam cannon application, wheel & tire care, tire shine — the foundation of every premium detail.</p>
+          <ul class="service-card-features">
+            <li>pH-enhanced foam cannon wash</li>
+            <li>Wheels & tires meticulously cleaned</li>
+            <li>Tire shine applied</li>
+            <li>Streak-free rinse finish</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay:0.1s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="service-card-tag">Interior</div>
+          <div class="service-card-title">Interior Refresh</div>
+          <div class="service-card-price">Starting at <span>$95</span></div>
+          <p class="service-card-desc">Full interior revival — vacuum, wipe-down, leather conditioning, and interior window cleaning. Your cabin refreshed to its original luxury standard.</p>
+          <ul class="service-card-features">
+            <li>Full interior vacuum</li>
+            <li>Dash, doors & console wipe-down</li>
+            <li>Leather brushing & conditioning</li>
+            <li>Interior windows cleaned</li>
+            <li>Light deodorizer treatment</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+
+        <div class="service-card featured reveal" style="transition-delay:0.15s">
+          <div class="featured-badge">Most Popular</div>
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <div class="service-card-tag">Full Service</div>
+          <div class="service-card-title">Society Signature</div>
+          <div class="service-card-price">Starting at <span>$160</span></div>
+          <p class="service-card-desc">The complete AeroExotic experience — interior refresh, exterior wash, door jambs, and a wax sealant that shields your paint for 30 days. The standard for discerning owners.</p>
+          <ul class="service-card-features">
+            <li>Interior Refresh package included</li>
+            <li>Essential Wash included</li>
+            <li>Door jambs deep cleaned</li>
+            <li>Wax sealant applied (1-month protection)</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Book This Service</a>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay:0.2s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <div class="service-card-tag">Ultimate</div>
+          <div class="service-card-title">Black Label Detail</div>
+          <div class="service-card-price"><span>$220</span> – $250</div>
+          <p class="service-card-desc">The ultimate detailing experience. Deep carpet & seat shampoo, steam treatment, leather restoration, full exterior detail, wax sealant, door jambs, and trim dressing.</p>
+          <ul class="service-card-features">
+            <li>Society Signature included</li>
+            <li>Deep carpet & seat shampoo</li>
+            <li>Steam cleaning treatment</li>
+            <li>Leather cleaning & conditioning</li>
+            <li>Door jambs & trim dressed</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Book This Service</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aircraft Panel -->
+    <div class="services-panel" id="panel-aircraft">
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+          <div class="service-card-tag">Aircraft</div>
+          <div class="service-card-title">Aircraft Exterior</div>
+          <div class="service-card-price">Custom <span>Quote</span></div>
+          <p class="service-card-desc">Full aircraft exterior detailing from nose cone to tail — safe aviation-grade cleaners, oxidation treatment, and a brilliant hand-polished finish.</p>
+          <ul class="service-card-features">
+            <li>Aviation-safe pH-neutral wash</li>
+            <li>Oxidation & stain treatment</li>
+            <li>Polish & wax protection</li>
+            <li>Engine bay exterior cleaning</li>
+            <li>Landing gear detail</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.1s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="service-card-tag">Aircraft</div>
+          <div class="service-card-title">Aircraft Interior</div>
+          <div class="service-card-price">Custom <span>Quote</span></div>
+          <p class="service-card-desc">Cabin deep-clean and restoration: upholstery, avionics dash protection, leather conditioning, carpet shampoo, and complete window treatment.</p>
+          <ul class="service-card-features">
+            <li>Full cabin vacuum & steam</li>
+            <li>Leather & upholstery care</li>
+            <li>Window scratch-safe clean</li>
+            <li>Carpet shampoo treatment</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card featured reveal" style="transition-delay:0.15s">
+          <div class="featured-badge">Top Choice</div>
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <div class="service-card-tag">Aircraft</div>
+          <div class="service-card-title">Full Aircraft Detail</div>
+          <div class="service-card-price">Custom <span>Quote</span></div>
+          <p class="service-card-desc">Complete interior and exterior aircraft detailing — the full white-glove treatment for your aircraft. We come directly to your hangar, fully self-contained.</p>
+          <ul class="service-card-features">
+            <li>Complete exterior detail</li>
+            <li>Complete interior detail</li>
+            <li>Corrosion prevention treatment</li>
+            <li>Paint protection application</li>
+            <li>Hangar-side service</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Book This Service</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Watercraft Panel -->
+    <div class="services-panel" id="panel-watercraft">
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 20h20M4 20V10l8-6 8 6v10"/><path d="M8 20v-6h8v6"/></svg>
+          <div class="service-card-tag">Watercraft</div>
+          <div class="service-card-title">Boat Exterior</div>
+          <div class="service-card-price">Custom <span>Quote</span></div>
+          <p class="service-card-desc">Marine-safe exterior detailing: hull oxidation removal, deep clean, gelcoat polish, and UV-protective wax. Restore that showroom gloss at your marina or driveway.</p>
+          <ul class="service-card-features">
+            <li>Hull wash & decontamination</li>
+            <li>Oxidation removal treatment</li>
+            <li>Gelcoat compound & polish</li>
+            <li>UV-protective wax sealant</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.1s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <div class="service-card-tag">Watercraft</div>
+          <div class="service-card-title">Marine Interior</div>
+          <div class="service-card-price">Custom <span>Quote</span></div>
+          <p class="service-card-desc">Complete cabin detailing: vinyl and upholstery care, mold & mildew treatment, carpet shampoo, stainless polish, and glass treatment.</p>
+          <ul class="service-card-features">
+            <li>Full interior vacuum & clean</li>
+            <li>Vinyl & upholstery conditioning</li>
+            <li>Mold & mildew treatment</li>
+            <li>Stainless & chrome polish</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card featured reveal" style="transition-delay:0.15s">
+          <div class="featured-badge">Complete</div>
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <div class="service-card-tag">Watercraft</div>
+          <div class="service-card-title">Full Marine Detail</div>
+          <div class="service-card-price">Custom <span>Quote</span></div>
+          <p class="service-card-desc">The complete marine detailing experience for powerboats, ski boats, and luxury vessels. Full interior and exterior — dockside or at your home.</p>
+          <ul class="service-card-features">
+            <li>Complete exterior hull detail</li>
+            <li>Full interior deep clean</li>
+            <li>Ceramic or wax protection option</li>
+            <li>Chrome & metal polish</li>
+            <li>Marina or driveway service</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Book This Service</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protection Panel -->
+    <div class="services-panel" id="panel-protection">
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="service-card-tag">Protection</div>
+          <div class="service-card-title">Ceramic Coating</div>
+          <div class="service-card-price">Starting at <span>$200</span></div>
+          <p class="service-card-desc">Professional-grade ceramic coating for cars, aircraft, and watercraft. Creates a hydrophobic, scratch-resistant shell that preserves and enhances your vehicle's finish for years.</p>
+          <ul class="service-card-features">
+            <li>Professional-grade ceramic formula</li>
+            <li>2–5 year protection lifespan</li>
+            <li>Hydrophobic self-cleaning surface</li>
+            <li>UV oxidation prevention</li>
+            <li>Enhanced gloss & depth</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.1s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <div class="service-card-tag">Add-On</div>
+          <div class="service-card-title">Paint Enhancement</div>
+          <div class="service-card-price">Starting at <span>$60</span></div>
+          <p class="service-card-desc">Exterior wax sealant providing a deep, glossy finish and 30–90 days of paint protection. The smart choice between full ceramic coatings.</p>
+          <ul class="service-card-features">
+            <li>Premium carnauba wax blend</li>
+            <li>30–90 day paint protection</li>
+            <li>Brilliant gloss enhancement</li>
+            <li>UV & water bead protection</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.15s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <div class="service-card-tag">Add-On</div>
+          <div class="service-card-title">Premium Add-Ons</div>
+          <div class="service-card-price">From <span>$25</span></div>
+          <p class="service-card-desc">Enhance any service with precision add-ons tailored to your vehicle's specific needs.</p>
+          <ul class="service-card-features">
+            <li>Pet hair removal: $25–$50</li>
+            <li>Heavy stain removal: $25+</li>
+            <li>Leather & carpet shampoo: $80+</li>
+            <li>Exterior wax sealant: $60–$90</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Request Quote</a>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.2s">
+          <svg class="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <div class="service-card-tag">Plans</div>
+          <div class="service-card-title">Maintenance Plans</div>
+          <div class="service-card-price">Custom <span>Plans</span></div>
+          <p class="service-card-desc">Recurring maintenance programs tailored to your schedule and vehicle type. Keep your car, boat, or aircraft in peak condition year-round with priority scheduling.</p>
+          <ul class="service-card-features">
+            <li>Monthly or quarterly scheduling</li>
+            <li>Priority booking & service</li>
+            <li>Discounted rates on recurring visits</li>
+            <li>Customized care programs</li>
+          </ul>
+          <a href="#quote" class="service-card-cta">Inquire Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     BRAND IMAGE STRIP 1
+======================================== -->
+<div class="brand-image-strip">
+  <div class="brand-image-strip-bg" style="background: linear-gradient(135deg, #0a0a0c 0%, #1a0808 30%, #0d0d0f 60%, #111215 100%);"></div>
+  <div class="brand-image-strip-overlay">
+    <div class="strip-content container">
+      <div class="strip-eyebrow">Aircraft Detailing</div>
+      <h3 class="strip-headline">Your Hangar.<br>Our Expertise.</h3>
+      <p class="strip-text">From Cessnas to Citations — we bring aircraft-grade care directly to your hangar. Self-contained and fully equipped, AeroExotic handles every surface with aviation-precision standards.</p>
+      <a href="#quote" class="btn-primary">Get Aircraft Quote</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     WHY CHOOSE
+======================================== -->
+<section id="why-choose">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-left reveal-left">
+        <div class="section-label">The AeroExotic Difference</div>
+        <h2 class="why-headline">Engineered for<br>Excellence</h2>
+        <p class="why-desc">Most detailers show up with a bucket and a pressure washer. We arrive with a fully-equipped professional van, premium-grade products, and the expertise to treat every high-value surface the way it deserves.</p>
+        <div class="why-big-stat">
+          <div class="why-stat">
+            <div class="why-stat-num">500<span>+</span></div>
+            <div class="why-stat-label">Jobs Completed</div>
+          </div>
+          <div class="why-stat">
+            <div class="why-stat-num">3</div>
+            <div class="why-stat-label">Vehicle Types</div>
+          </div>
+          <div class="why-stat">
+            <div class="why-stat-num">5<span>★</span></div>
+            <div class="why-stat-label">Client Rating</div>
+          </div>
+        </div>
+      </div>
+      <div class="why-features">
+        <div class="why-feature reveal" style="transition-delay:0.05s">
+          <div class="why-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="why-feature-content">
+            <div class="why-feature-title">Fully Mobile — We Come to You</div>
+            <p class="why-feature-text">No dropping off, no waiting in line. Our professional van arrives at your home, office, hangar, or marina — fully self-contained with water and power.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal" style="transition-delay:0.1s">
+          <div class="why-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="why-feature-content">
+            <div class="why-feature-title">Specialized for High-Value Surfaces</div>
+            <p class="why-feature-text">Exotics, aircraft, and watercraft demand different chemistry and techniques. We've built our entire process around protecting premium finishes.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal" style="transition-delay:0.15s">
+          <div class="why-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <div class="why-feature-content">
+            <div class="why-feature-title">Premium-Grade Products Only</div>
+            <p class="why-feature-text">We don't cut corners with generic products. Every solution we use is chosen for performance, safety, and compatibility with the world's finest surfaces.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal" style="transition-delay:0.2s">
+          <div class="why-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="why-feature-content">
+            <div class="why-feature-title">Discreet White-Glove Experience</div>
+            <p class="why-feature-text">Professional, courteous, and mindful of your time and privacy. We treat your property with the same care and discretion as our own.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal" style="transition-delay:0.25s">
+          <div class="why-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="why-feature-content">
+            <div class="why-feature-title">Customized Care for Every Vehicle</div>
+            <p class="why-feature-text">Every detail is assessed and tailored. No one-size-fits-all approach. Your car, aircraft, or vessel gets exactly what it needs — nothing more, nothing less.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     COMPARE SECTION
+======================================== -->
+<section id="compare" style="padding:80px 0; background:var(--black);">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:50px;">
+      <div class="section-label-center">The Standard</div>
+      <h2 class="section-title">Not Your Average Detailer</h2>
+    </div>
+    <div class="compare-grid reveal">
+      <div class="compare-col aero">
+        <div class="compare-col-header">
+          <svg width="20" height="20" viewBox="0 0 80 80" fill="none">
+            <path d="M40 4L8 72H20L28 52H52L60 72H72L40 4Z" fill="#b52b22"/>
+            <path d="M6 38L26 34L22 42L6 46Z" fill="#b52b22"/>
+          </svg>
+          <span class="compare-col-title">AeroExotic</span>
+        </div>
+        <div class="compare-items">
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Fully mobile — comes to you</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Aircraft & watercraft capable</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Self-contained water & power</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Ceramic coating certified</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Premium, safe chemistry</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> White-glove professionalism</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Customized per vehicle</div>
+          <div class="compare-item"><span class="compare-icon-yes">✓</span> Exotic & luxury specialists</div>
+        </div>
+      </div>
+      <div class="compare-col others">
+        <div class="compare-col-header">
+          <span class="compare-col-title">Other Detailers</span>
+        </div>
+        <div class="compare-items">
+          <div class="compare-item"><span class="compare-icon-no">✕</span> Drive to their location</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> Cars only</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> Need your water hookup</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> Limited protection options</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> Generic products</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> One-size-fits-all approach</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> Template service packages</div>
+          <div class="compare-item"><span class="compare-icon-no">✕</span> No exotic experience</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     GALLERY
+======================================== -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label-center">Our Work</div>
+      <h2 class="section-title">Results That Speak</h2>
+      <p class="section-desc">Every vehicle we touch leaves looking showroom-perfect. Aircraft, watercraft, exotics — the AeroExotic standard.</p>
+    </div>
+    <div class="gallery-filters reveal">
+      <button class="filter-btn active" onclick="filterGallery(this, 'all')">All</button>
+      <button class="filter-btn" onclick="filterGallery(this, 'auto')">Automotive</button>
+      <button class="filter-btn" onclick="filterGallery(this, 'aircraft')">Aircraft</button>
+      <button class="filter-btn" onclick="filterGallery(this, 'boat')">Watercraft</button>
+    </div>
+  </div>
+  <div class="gallery-grid" style="max-width:1280px; margin:0 auto; padding:0 40px;" id="gallery-grid">
+
+    <div class="gallery-item wide g1 reveal" data-cat="auto" onclick="openLightbox(this)">
+      <div style="width:100%;height:100%;background:linear-gradient(145deg,#200808 0%,#3a0f0f 40%,#180a0a 100%);display:flex;align-items:center;justify-content:center;">
+        <svg style="opacity:0.08" width="180" height="100" viewBox="0 0 180 100" fill="none">
+          <rect x="20" y="40" width="140" height="40" rx="8" fill="white"/>
+          <rect x="40" y="20" width="90" height="30" rx="4" fill="white"/>
+          <circle cx="50" cy="82" r="16" fill="white"/>
+          <circle cx="130" cy="82" r="16" fill="white"/>
+        </svg>
+      </div>
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-caption">Gloss Red Exotic — Full Detail</div>
+          <div class="gallery-caption-sub">Automotive</div>
+        </div>
+      </div>
+      <div class="gallery-expand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    </div>
+
+    <div class="gallery-item tall g2 reveal" style="transition-delay:0.05s" data-cat="aircraft" onclick="openLightbox(this)">
+      <div style="width:100%;height:100%;background:linear-gradient(180deg,#0f1520 0%,#182030 50%,#0a0c10 100%);display:flex;align-items:center;justify-content:center;">
+        <svg style="opacity:0.08" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
+          <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+        </svg>
+      </div>
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-caption">Private Aircraft — Full Detail</div>
+          <div class="gallery-caption-sub">Aircraft</div>
+        </div>
+      </div>
+      <div class="gallery-expand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    </div>
+
+    <div class="gallery-item g3 reveal" style="transition-delay:0.1s" data-cat="auto" onclick="openLightbox(this)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#101418 0%,#1a2028 60%,#0c1018 100%);display:flex;align-items:center;justify-content:center;">
+        <svg style="opacity:0.08" width="100" height="60" viewBox="0 0 180 100" fill="none">
+          <rect x="20" y="40" width="140" height="40" rx="8" fill="white"/>
+          <rect x="50" y="20" width="70" height="28" rx="4" fill="white"/>
+          <circle cx="50" cy="82" r="16" fill="white"/>
+          <circle cx="130" cy="82" r="16" fill="white"/>
+        </svg>
+      </div>
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-caption">Black Luxury Sedan — Interior</div>
+          <div class="gallery-caption-sub">Automotive</div>
+        </div>
+      </div>
+      <div class="gallery-expand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    </div>
+
+    <div class="gallery-item g4 reveal" style="transition-delay:0.15s" data-cat="boat" onclick="openLightbox(this)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#100c08 0%,#1e1510 60%,#0e0a08 100%);display:flex;align-items:center;justify-content:center;">
+        <svg style="opacity:0.08" width="100" height="70" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
+          <path d="M2 20h20M4 20V10l8-6 8 6v10"/>
+        </svg>
+      </div>
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-caption">MasterCraft Boat — Full Detail</div>
+          <div class="gallery-caption-sub">Watercraft</div>
+        </div>
+      </div>
+      <div class="gallery-expand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    </div>
+
+    <div class="gallery-item g5 reveal" style="transition-delay:0.2s" data-cat="auto" onclick="openLightbox(this)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#080f18 0%,#0f1a28 60%,#061014 100%);display:flex;align-items:center;justify-content:center;">
+        <svg style="opacity:0.08" width="100" height="60" viewBox="0 0 180 100" fill="none">
+          <rect x="20" y="40" width="140" height="40" rx="8" fill="white"/>
+          <rect x="30" y="18" width="100" height="30" rx="6" fill="white"/>
+          <circle cx="50" cy="82" r="16" fill="white"/>
+          <circle cx="130" cy="82" r="16" fill="white"/>
+        </svg>
+      </div>
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-caption">Porsche 911 GT3 — Ceramic</div>
+          <div class="gallery-caption-sub">Automotive · Ceramic Coating</div>
+        </div>
+      </div>
+      <div class="gallery-expand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    </div>
+
+    <div class="gallery-item wide g6 reveal" style="transition-delay:0.25s" data-cat="aircraft" onclick="openLightbox(this)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#100f08 0%,#1e1c10 60%,#100e08 100%);display:flex;align-items:center;justify-content:center;">
+        <svg style="opacity:0.07" width="240" height="100" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="0.8">
+          <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+        </svg>
+      </div>
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-caption">Twin Engine Cessna — Full Exterior & Interior</div>
+          <div class="gallery-caption-sub">Aircraft</div>
+        </div>
+      </div>
+      <div class="gallery-expand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     PROCESS
+======================================== -->
+<section id="process">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label-center">How It Works</div>
+      <h2 class="section-title">The White-Glove Process</h2>
+      <p class="section-desc">Effortless from start to finish. Four steps to showroom-perfect results delivered to your door.</p>
+    </div>
+    <div class="process-timeline">
+      <div class="process-step reveal" style="transition-delay:0.05s">
+        <div class="process-step-num">
+          <span class="process-step-num-text">01</span>
+          <div class="process-step-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+        </div>
+        <h4 class="process-step-title">Request a Quote</h4>
+        <p class="process-step-text">Fill out our quick form or call us directly. Tell us your vehicle, service interest, and location — we'll respond with a precise quote.</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.15s">
+        <div class="process-step-num">
+          <span class="process-step-num-text">02</span>
+          <div class="process-step-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+        </div>
+        <h4 class="process-step-title">Schedule Service</h4>
+        <p class="process-step-text">Pick a time that works for you. We accommodate your schedule — whether it's early morning, evenings, or weekends.</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.25s">
+        <div class="process-step-num">
+          <span class="process-step-num-text">03</span>
+          <div class="process-step-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg>
+          </div>
+        </div>
+        <h4 class="process-step-title">We Detail On-Site</h4>
+        <p class="process-step-text">Our fully-equipped van arrives at your specified location. We handle everything — water, power, products, and expertise.</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.35s">
+        <div class="process-step-num">
+          <span class="process-step-num-text">04</span>
+          <div class="process-step-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+        </div>
+        <h4 class="process-step-title">Showroom Results</h4>
+        <p class="process-step-text">Inspect your vehicle and enjoy the transformation. Showroom-perfect results, delivered with zero inconvenience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     TESTIMONIALS
+======================================== -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label-center">Client Reviews</div>
+      <h2 class="section-title">Trusted by Enthusiasts</h2>
+      <p class="section-desc">From exotic car owners to aircraft operators — the feedback speaks for itself.</p>
+    </div>
+    <div class="testimonials-wrapper reveal">
+      <div class="testimonials-track" id="testimonials-track">
+
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">"</div>
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">They detailed my Porsche GT3 at my home while I worked. Arrived fully equipped, were incredibly professional, and the result was genuinely better than any detailing shop I've ever used. The paint looked like it just left the factory floor.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div>
+              <div class="testimonial-name">Marcus T.</div>
+              <div class="testimonial-vehicle">Porsche 911 GT3 RS</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">"</div>
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">I own a Piper Malibu and have struggled to find anyone who actually understands aircraft surfaces. AeroExotic not only understood the material sensitivity but delivered an exterior polish that I've never seen on this plane in 12 years of ownership.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">J</div>
+            <div>
+              <div class="testimonial-name">James R.</div>
+              <div class="testimonial-vehicle">Piper Malibu — Private Pilot</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">"</div>
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">My MasterCraft was looking rough after a season. AeroExotic came to my driveway and completely transformed it — hull oxidation gone, gelcoat restored, interior spotless. Worth every dollar. Signed up for their monthly maintenance plan on the spot.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">S</div>
+            <div>
+              <div class="testimonial-name">Sarah K.</div>
+              <div class="testimonial-vehicle">MasterCraft X-Star</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">"</div>
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">The Black Label detail on my Ferrari was flawless. These guys treat your car like they own it — meticulous, careful, and the results are stunning. The ceramic coating they applied still looks incredible six months later.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div>
+              <div class="testimonial-name">David H.</div>
+              <div class="testimonial-vehicle">Ferrari 488 GTB</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-quote-mark">"</div>
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">I manage a fleet of executive vehicles and AeroExotic handles all of them on a recurring basis. The consistency, professionalism, and quality are unmatched. They've become an essential partner for our operation.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">A</div>
+            <div>
+              <div class="testimonial-name">Amanda L.</div>
+              <div class="testimonial-vehicle">Fleet Manager — Executive Transport</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="testimonials-nav">
+      <button class="t-nav-btn" onclick="slidePrev()">←</button>
+      <button class="t-nav-btn" onclick="slideNext()">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     SERVICE AREA
+======================================== -->
+<section id="service-area" style="padding:80px 0; background:var(--dark-2); border-top:var(--border-dim); border-bottom:var(--border-dim);">
+  <div class="container">
+    <div class="service-area-inner reveal">
+      <div class="service-area-text">
+        <div class="section-label">Coverage Area</div>
+        <h3 class="service-area-title">Serving Spokane & the Inland Northwest</h3>
+        <p class="service-area-sub">We travel to you — residences, office complexes, hangars, marinas, and more. Don't see your area? Contact us and we'll figure it out.</p>
+      </div>
+      <div class="service-area-tags">
+        <a href="#quote" class="area-tag">Spokane</a>
+        <a href="#quote" class="area-tag">Spokane Valley</a>
+        <a href="#quote" class="area-tag">Coeur d'Alene</a>
+        <a href="#quote" class="area-tag">Liberty Lake</a>
+        <a href="#quote" class="area-tag">Post Falls</a>
+        <a href="#quote" class="area-tag">Cheney</a>
+        <a href="#quote" class="area-tag">Surrounding Areas</a>
+        <a href="#quote" class="area-tag">→ Inquire About Your Location</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     FAQ
+======================================== -->
+<section id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label-center">Common Questions</div>
+      <h2 class="section-title">Frequently Asked</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal" style="transition-delay:0.05s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">What areas do you service?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We primarily service the Spokane metropolitan area and the Inland Northwest, including Spokane Valley, Coeur d'Alene, Liberty Lake, Post Falls, and Cheney. For aircraft clients, we travel to Felts Field, Spokane International, and surrounding private airstrips. Contact us for out-of-area requests — we do accommodate travel for significant jobs.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.1s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Do you bring your own water and power?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes — our service van is fully self-contained. We carry our own water supply, generator, and all necessary equipment. You don't need to provide anything. Simply show us to your vehicle and we handle the rest.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.05s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">What types of vehicles do you detail?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We specialize in three categories: automotive (from daily drivers to exotic supercars), aircraft (piston and turbine aircraft, helicopters), and watercraft (powerboats, ski boats, pontoons, and personal watercraft). If you're unsure whether we service your specific vehicle, just ask.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.1s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Do you offer ceramic coating?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes. We offer professional-grade ceramic coating for automotive, aircraft, and watercraft surfaces. Ceramic coating provides 2–5 years of hydrophobic paint protection, UV resistance, and enhanced gloss. Pricing starts at $200 and varies by vehicle size and surface condition.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.05s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">How long does a detail take?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Service duration depends on the vehicle and package. An Essential Wash takes 1–1.5 hours. The Society Signature runs 2–3 hours. The Black Label Detail typically takes 4–6 hours. Aircraft and watercraft detail times vary by size — we'll provide a time estimate when you book.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.1s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">How do I get a quote?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Use the quote form below or call us directly. Tell us your vehicle type, the service you're interested in, and your location. We'll respond promptly with an accurate, no-surprise quote. There's no commitment to request a quote.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.05s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Are your products safe for exotic paint and surfaces?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Absolutely. We specifically choose products rated safe for high-value surfaces including clear coat, ceramic, aircraft aluminum, anodized finishes, gelcoat, and exotic materials. We do not use harsh chemicals that could damage delicate paint systems.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:0.1s">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Do you offer maintenance plans?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes — we offer recurring maintenance programs on a monthly or quarterly basis. Maintenance clients receive priority scheduling, discounted rates, and a dedicated service professional who knows your vehicle's history and specific needs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     QUOTE FORM
+======================================== -->
+<section id="quote">
+  <div class="container">
+    <div class="quote-inner">
+      <div class="quote-left reveal-left">
+        <div class="section-label">Get Started</div>
+        <h2 class="quote-headline">Ready for<br>Showroom Results?</h2>
+        <p class="quote-desc">Tell us about your vehicle and we'll provide a precise, no-obligation quote. We respond quickly — usually within a few hours.</p>
+        <div class="quote-contacts">
+          <a href="tel:+15095550190" class="quote-contact-item">
+            <div class="quote-contact-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91A16 16 0 0 0 15 16.91l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            (509) 555-0190
+          </a>
+          <a href="mailto:hello@aeroexotic.com" class="quote-contact-item">
+            <div class="quote-contact-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            hello@aeroexotic.com
+          </a>
+          <div class="quote-contact-item">
+            <div class="quote-contact-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            Mon–Sat: 7:00 AM – 7:00 PM
+          </div>
+        </div>
+      </div>
+      <div class="quote-form reveal">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input class="form-input" type="text" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input class="form-input" type="text" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input class="form-input" type="tel" placeholder="(509) 000-0000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vehicle Type</label>
+          <select class="form-select">
+            <option value="">Select vehicle type</option>
+            <option>Exotic / Sports Car</option>
+            <option>Luxury Sedan / SUV</option>
+            <option>Daily Driver / Other Auto</option>
+            <option>Aircraft — Piston</option>
+            <option>Aircraft — Turbine / Jet</option>
+            <option>Helicopter</option>
+            <option>Powerboat / Ski Boat</option>
+            <option>Pontoon / Yacht</option>
+            <option>Personal Watercraft</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Interest</label>
+          <select class="form-select">
+            <option value="">Select a service</option>
+            <option>Essential Wash ($60+)</option>
+            <option>Interior Refresh ($95+)</option>
+            <option>Society Signature ($160+)</option>
+            <option>Black Label Detail ($220–250)</option>
+            <option>Ceramic Coating ($200+)</option>
+            <option>Aircraft Detailing (Custom Quote)</option>
+            <option>Watercraft Detailing (Custom Quote)</option>
+            <option>Maintenance Plan</option>
+            <option>Not Sure — Help Me Choose</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional Details</label>
+          <textarea class="form-textarea" placeholder="Year, make, model. Any specific concerns or requests. Your location for service."></textarea>
+        </div>
+        <button class="btn-primary form-submit" onclick="submitForm(event)">Request My Quote →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     FINAL CTA
+======================================== -->
+<section id="final-cta">
+  <div class="cta-bg-lines"></div>
+  <div class="container">
+    <div class="cta-content reveal">
+      <div class="cta-label">The AeroExotic Standard</div>
+      <h2 class="cta-headline">Your Vehicle<br>Deserves More<br>Than a Basic Detail</h2>
+      <p class="cta-sub">Premium mobile care for the vehicles and aircraft that define your lifestyle. Precision-engineered results, delivered to your door.</p>
+      <div class="cta-buttons">
+        <a href="#quote" class="btn-primary btn-large">Book Premium Service</a>
+        <a href="tel:+15095550190" class="btn-secondary btn-large">Call Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+<footer id="footer">
+  <!-- Watermark -->
+  <div class="footer-watermark">
+    <svg width="300" height="300" viewBox="0 0 80 80" fill="none">
+      <path d="M40 4L8 72H20L28 52H52L60 72H72L40 4Z" fill="white"/>
+      <path d="M6 38L26 34L22 42L6 46Z" fill="white"/>
+      <path d="M4 44L24 40L20 47L4 50Z" fill="white"/>
+      <path d="M5 50L22 46L19 52L5 55Z" fill="white"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo-full">
+          <svg class="logo-mark" viewBox="0 0 80 80" fill="none">
+            <path d="M40 4L8 72H20L28 52H52L60 72H72L40 4Z" fill="white" opacity="0.9"/>
+            <path d="M32 44L40 20L48 44H32Z" fill="#b52b22"/>
+            <path d="M6 38L26 34L22 42L6 46Z" fill="white" opacity="0.9"/>
+            <path d="M4 44L24 40L20 47L4 50Z" fill="white" opacity="0.6"/>
+            <path d="M5 50L22 46L19 52L5 55Z" fill="white" opacity="0.35"/>
+          </svg>
+          <div class="logo-text-wrap">
+            <span class="logo-text-main">AeroExotic</span>
+            <span class="logo-text-sub">Aircraft · Watercraft · Automotive</span>
+          </div>
+        </a>
+        <p class="footer-tagline">Elite mobile detailing for aircraft, watercraft, and exotic vehicles. Precision-engineered results, delivered to your door.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" title="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="social-btn" title="Facebook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" title="Twitter / X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" title="YouTube">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#why-choose">Why Us</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#quote">Get a Quote</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Services</h4>
+        <ul class="footer-links">
+          <li><a href="#services">Essential Wash</a></li>
+          <li><a href="#services">Interior Refresh</a></li>
+          <li><a href="#services">Society Signature</a></li>
+          <li><a href="#services">Black Label Detail</a></li>
+          <li><a href="#services">Aircraft Detailing</a></li>
+          <li><a href="#services">Watercraft Detailing</a></li>
+          <li><a href="#services">Ceramic Coating</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Contact</h4>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91A16 16 0 0 0 15 16.91l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="footer-contact-text">(509) 555-0190</div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="footer-contact-text">hello@aeroexotic.com</div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="footer-contact-text">Spokane, Washington<br>Mobile Service Only</div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="footer-contact-text">Mon–Sat: 7 AM – 7 PM<br>Sun: By Appointment</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 AeroExotic Mobile Detailing. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Booking Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========================================
+     JAVASCRIPT
+======================================== -->
+<script>
+// ── NAVBAR SCROLL ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── MOBILE MENU ──
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('open');
+}
+
+// ── SCROLL REVEAL ──
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left').forEach(el => {
+  revealObs.observe(el);
+});
+
+// ── SERVICE TABS ──
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.services-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  // Re-run reveal for newly shown cards
+  document.querySelectorAll('#panel-' + tab + ' .reveal').forEach(el => {
+    el.classList.remove('visible');
+    setTimeout(() => el.classList.add('visible'), 50);
+  });
+}
+
+// ── FAQ ACCORDION ──
+function toggleFaq(questionEl) {
+  const item = questionEl.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ── GALLERY FILTER ──
+function filterGallery(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// ── LIGHTBOX ──
+function openLightbox(el) {
+  const lb = document.getElementById('lightbox');
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+// ── TESTIMONIALS SLIDER ──
+let slideIndex = 0;
+const track = document.getElementById('testimonials-track');
+
+function getVisibleCount() {
+  return window.innerWidth < 700 ? 1 : window.innerWidth < 1000 ? 2 : 3;
+}
+
+function updateSlider() {
+  const cards = track.querySelectorAll('.testimonial-card');
+  const visCount = getVisibleCount();
+  const maxIndex = Math.max(0, cards.length - visCount);
+  slideIndex = Math.max(0, Math.min(slideIndex, maxIndex));
+  const pct = (100 / visCount) * slideIndex;
+  track.style.transform = `translateX(-${pct}%)`;
+}
+
+function slideNext() {
+  slideIndex++;
+  updateSlider();
+}
+
+function slidePrev() {
+  slideIndex--;
+  updateSlider();
+}
+
+window.addEventListener('resize', updateSlider);
+
+// ── FORM SUBMIT ──
+function submitForm(e) {
+  e.preventDefault();
+  const btn = e.target;
+  btn.textContent = '✓ Quote Request Sent!';
+  btn.style.background = '#1a6b3a';
+  btn.style.cursor = 'default';
+  setTimeout(() => {
+    btn.textContent = 'Request My Quote →';
+    btn.style.background = '';
+    btn.style.cursor = '';
+  }, 4000);
+}
+
+// ── HERO PARALLAX (subtle) ──
+window.addEventListener('scroll', () => {
+  const scroll = window.scrollY;
+  const hero = document.getElementById('hero');
+  if (hero && scroll < window.innerHeight * 1.5) {
+    const watermark = hero.querySelector('.hero-watermark');
+    if (watermark) {
+      watermark.style.transform = `translateY(calc(-50% + ${scroll * 0.15}px))`;
+    }
+  }
+});
+
+// ── ANIMATED COUNTERS ──
+function animateCounter(el, target, duration = 1800) {
+  let start = 0;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  };
+  requestAnimationFrame(step);
+}
+
+// Observe hero stats
+const statsObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.hero-stat-num').forEach(el => {
+        const text = el.textContent;
+        const num = parseInt(text);
+        if (!isNaN(num)) {
+          el.innerHTML = el.innerHTML; // keep spans
+        }
+      });
+      statsObs.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) statsObs.observe(heroStats);
+</script>
+
+</body>
+</html>
